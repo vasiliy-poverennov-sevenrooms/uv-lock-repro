@@ -185,3 +185,63 @@ Using CPython 3.12.8
     0.000851s DEBUG uv::commands::project::lock Existing `uv.lock` satisfies workspace requirements
 Resolved 1 package in 0.27ms
 ```
+
+uv 0.5.18
+```
+> RUST_LOG=uv=trace uv lock -vvv
+    0.000017s DEBUG uv uv 0.5.18 (27d1bad55 2025-01-11)
+    0.000337s DEBUG uv_workspace::workspace Found workspace root: `/Users/vasiliy/pg/uv-lock-repro`
+    0.000354s DEBUG uv_workspace::workspace Adding current workspace member: `/Users/vasiliy/pg/uv-lock-repro`
+    0.000418s DEBUG uv::commands::project Using Python request `==3.12.*` from `requires-python` metadata
+    0.000503s DEBUG uv_python::discovery Searching for Python ==3.12.* in managed installations or search path
+    0.000544s DEBUG uv_python::discovery Searching for managed installations at `/Users/vasiliy/.local/share/uv/python`
+    0.000672s DEBUG uv_python::discovery Skipping incompatible managed installation `cpython-3.13.0-macos-aarch64-none`
+    0.000681s DEBUG uv_python::discovery Found managed installation `cpython-3.12.8-macos-aarch64-none`
+    0.000844s TRACE uv_python::interpreter Cached interpreter info for Python 3.12.8, skipping probing: /Users/vasiliy/.local/share/uv/python/cpython-3.12.8-macos-aarch64-none/bin/python3.12
+    0.000853s DEBUG uv_python::discovery Found `cpython-3.12.8-macos-aarch64-none` at `/Users/vasiliy/.local/share/uv/python/cpython-3.12.8-macos-aarch64-none/bin/python3.12` (managed installations)
+Using CPython 3.12.8
+ uv_client::linehaul::linehaul 
+    0.001249s DEBUG uv_client::base_client Using request timeout of 30s
+ uv_resolver::flat_index::from_entries 
+    0.001518s DEBUG uv::commands::project::lock Ignoring existing lockfile due to mismatched version: `my-lib` (expected: `0.42.2`, found: `0.42.1`)
+ uv_distribution::distribution_database::get_or_build_wheel_metadata dist=my-lib @ file:///Users/vasiliy/pg/uv-lock-repro
+    0.001769s   0ms DEBUG uv_distribution::source Found static `pyproject.toml` for: my-lib @ file:///Users/vasiliy/pg/uv-lock-repro
+    0.001882s   0ms DEBUG uv_workspace::workspace No workspace root found, using project root
+    0.002220s TRACE uv_requirements::lookahead Performing lookahead for my-lib @ file:///Users/vasiliy/pg/uv-lock-repro
+    0.002301s TRACE uv_requirements::lookahead Performing lookahead for my-lib @ file:///Users/vasiliy/pg/uv-lock-repro
+ uv_resolver::resolver::solve 
+    0.002657s   0ms DEBUG uv_resolver::resolver Solving with installed Python version: 3.12.8
+    0.002665s   0ms DEBUG uv_resolver::resolver Solving with target Python version: ==3.12.*
+    0.002713s   0ms TRACE uv_resolver::resolver assigned packages: 
+    0.002723s   0ms TRACE uv_resolver::resolver Chose package for decision: root. remaining choices: 
+   uv_resolver::resolver::get_dependencies_forking package=root, version=0a0.dev0
+     uv_resolver::resolver::get_dependencies package=root, version=0a0.dev0
+    0.002861s   0ms DEBUG uv_resolver::resolver Adding direct dependency: my-lib*
+    0.002874s   0ms DEBUG uv_resolver::resolver Adding direct dependency: my-lib:dev*
+    0.002915s   0ms TRACE uv_resolver::resolver assigned packages: root==0a0.dev0
+    0.003061s   0ms TRACE uv_resolver::resolver Chose package for decision: my-lib:dev. remaining choices: my-lib
+    0.003085s   0ms DEBUG uv_resolver::resolver Searching for a compatible version of my-lib @ file:///Users/vasiliy/pg/uv-lock-repro (*)
+   uv_resolver::resolver::get_dependencies_forking package=my-lib:dev, version=0.42.2
+     uv_resolver::resolver::get_dependencies package=my-lib:dev, version=0.42.2
+    0.003125s   0ms DEBUG uv_resolver::resolver Adding direct dependency: my-lib:dev==0.42.2
+    0.003146s   0ms TRACE uv_resolver::resolver assigned packages: root==0a0.dev0
+    0.003151s   0ms TRACE uv_resolver::resolver Chose package for decision: my-lib. remaining choices: my-lib:dev
+    0.003157s   0ms DEBUG uv_resolver::resolver Searching for a compatible version of my-lib @ file:///Users/vasiliy/pg/uv-lock-repro (*)
+   uv_resolver::resolver::get_dependencies_forking package=my-lib, version=0.42.2
+     uv_resolver::resolver::get_dependencies package=my-lib, version=0.42.2
+    0.004358s   1ms TRACE uv_resolver::resolver assigned packages: root==0a0.dev0, my-lib==0.42.2
+    0.004362s   1ms TRACE uv_resolver::resolver Chose package for decision: my-lib:dev. remaining choices: 
+    0.004372s   1ms DEBUG uv_resolver::resolver Searching for a compatible version of my-lib @ file:///Users/vasiliy/pg/uv-lock-repro (==0.42.2)
+   uv_resolver::resolver::get_dependencies_forking package=my-lib:dev, version=0.42.2
+     uv_resolver::resolver::get_dependencies package=my-lib:dev, version=0.42.2
+    0.004395s   1ms TRACE uv_resolver::resolver assigned packages: root==0a0.dev0, my-lib==0.42.2, my-lib:dev==0.42.2
+    0.005370s   2ms DEBUG uv_resolver::resolver::batch_prefetch Tried 1 versions: my-lib 1
+    0.005376s   2ms DEBUG uv_resolver::resolver all marker environments resolution took 0.003s
+    0.005432s   2ms TRACE uv_resolver::resolver Resolution: ResolverEnvironment { kind: Universal { initial_forks: [], markers: true, include: {}, exclude: {} } }
+    0.005441s   2ms TRACE uv_resolver::resolver Resolution edge: ROOT -> my-lib
+    0.005445s   2ms TRACE uv_resolver::resolver Resolution edge:     0a0.dev0 -> 0.42.2 (group: dev)
+    0.005448s   2ms TRACE uv_resolver::resolver Resolution edge: ROOT -> my-lib
+    0.005451s   2ms TRACE uv_resolver::resolver Resolution edge:     0a0.dev0 -> 0.42.2
+Resolved 1 package in 5ms
+Updated my-lib v0.42.1 -> v0.42.2
+```
